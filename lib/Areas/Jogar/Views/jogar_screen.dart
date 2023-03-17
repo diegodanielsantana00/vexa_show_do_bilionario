@@ -74,7 +74,8 @@ class _JogarScreenState extends State<JogarScreen> {
                   jogarWidgets.botaoAjudaContainer(context, Icons.shortcut_rounded),
                 ],
               ),
-              for (int i = 0; i < jogarController!.perguntaAtual.respostas.length; i++) jogarWidgets.respostaContainer(context, jogarController!.perguntaAtual.respostas[i], jogarController!.perguntaAtual.indexResposta == i, jogarController!),
+              for (int i = 0; i < jogarController!.perguntaAtual.respostas.length; i++)
+                jogarWidgets.respostaContainer(context, jogarController!.perguntaAtual.respostas[i], jogarController!.perguntaAtual.indexResposta == i, jogarController!, i),
             ],
           ),
         ),

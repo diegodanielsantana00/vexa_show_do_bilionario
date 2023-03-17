@@ -21,23 +21,27 @@ class JogarController {
   void sortearPergunta() {
     int index = Random().nextInt(litaPerguntas.length);
     index = Random().nextInt(litaPerguntas.length);
+    while (indexJaSorteados.contains(index)){
+      index = Random().nextInt(litaPerguntas.length);
+    }
     indexJaSorteados.add(index);
     perguntaAtual = litaPerguntas[index];
   }
 
-  void acertouPergunta(BuildContext context) async {
-    moneyLevel++;
-    nextMoneyLevel++;
+  Future<void> acertouPergunta(BuildContext context) async {
     AudioCache audioCache = AudioCache();
     audioPlayer = await audioCache.play("suspense_espera_resposta.wav");
-    Future.delayed(const Duration(seconds: 3), () async {
+    Future.delayed(const Duration(seconds: 2), () async {
       audioPlayer = await audioCache.play("acertou.mp3");
+    });
+    Future.delayed(const Duration(seconds: 4), () async {
+      moneyLevel++;
+      nextMoneyLevel++;
       sortearPergunta();
-      RestartScreenHotRestart(context);
     });
   }
 
-  void errouPergunta(BuildContext context) async {
+  Future<void> errouPergunta(BuildContext context) async {
     AudioCache audioCache = AudioCache();
     audioPlayer = await audioCache.play("suspense_espera_resposta.wav");
     Future.delayed(const Duration(seconds: 3), () async {

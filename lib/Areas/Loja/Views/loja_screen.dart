@@ -37,7 +37,7 @@ class _LojaScreenState extends State<LojaScreen> {
           child: Column(
             children: [
               lojaWidgets.titulo("Produtos"),
-              lojaWidgets.containerProdutosLoja(context, "Vida Extra", 450),
+              lojaWidgets.containerProdutosLoja(context, "Vida Extra", 1500),
               lojaWidgets.titulo("Assista e ganhe"),
               lojaWidgets.dinheiroGratis(context),
               ],

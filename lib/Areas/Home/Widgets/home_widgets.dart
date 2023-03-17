@@ -23,13 +23,19 @@ class HomeWidgets {
       children: [
         IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.share,
               color: Colors.white,
             )),
         IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
+              Icons.star,
+              color: Colors.white,
+            )),
+        IconButton(
+            onPressed: () {},
+            icon: const Icon(
               Icons.telegram_outlined,
               color: Colors.white,
             ))
