@@ -1,5 +1,8 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:vexa_show_do_bilionario/Areas/Home/Views/home_screen.dart';
 import 'package:vexa_show_do_bilionario/Areas/Jogar/Controller/jogar_controller.dart';
+import 'package:vexa_show_do_bilionario/Areas/Jogar/Views/jogar_screen.dart';
 import 'package:vexa_show_do_bilionario/Common/GlobalFunctions.dart';
 import 'package:vexa_show_do_bilionario/Common/Navigator.dart';
 import 'package:vexa_show_do_bilionario/Common/Perguntas.dart';
@@ -97,7 +100,7 @@ class JogarWidgets {
     );
   }
 
-  Widget botaoAjudaContainer(BuildContext context, IconData icon) {
+  Widget botaoAjudaContainer(BuildContext context, IconData icon, bool ajudaAtiva) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -107,7 +110,7 @@ class JogarWidgets {
         child: Center(
             child: Icon(
           icon,
-          color: Colors.white,
+          color: ajudaAtiva ? Colors.white : Colors.red[200],
         )),
       ),
     );
@@ -115,13 +118,13 @@ class JogarWidgets {
 
   List<Color> colorBotaoAux = [Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.1)];
 
-  Widget respostaContainer(BuildContext context, String resposta, bool certa, JogarController jogarController, int index) {
+  Widget respostaContainer(BuildContext context, String resposta, bool certa, JogarController jogarController, int index, AudioPlayer audioPlayer) {
     return GestureDetector(
       onTap: () async {
         colorBotaoAux[index] = Colors.amber.withOpacity(0.4);
         RestartScreenHotRestart(context);
         if (certa) {
-          if (jogarController.nextMoneyLevel+1 != moneyLevel.length) {
+          if (jogarController.nextMoneyLevel + 1 != moneyLevel.length) {
             await jogarController.acertouPergunta(context);
             Future.delayed(const Duration(seconds: 2), () async {
               colorBotaoAux[index] = Colors.green[900]!;
@@ -132,14 +135,14 @@ class JogarWidgets {
               RestartScreenHotRestart(context);
               modalNiveis(context, jogarController.moneyLevel);
             });
-          }else{
-            modalFinalizacaoJogo(context, moneyLevel[jogarController.nextMoneyLevel], jogarController.nextMoneyLevel);
+          } else {
+            modalFinalizacaoJogo(context, moneyLevel[jogarController.nextMoneyLevel], jogarController.nextMoneyLevel, audioPlayer);
           }
         } else {
           await jogarController.errouPergunta(context);
           colorBotaoAux[index] = Colors.red[900]!;
           Future.delayed(const Duration(seconds: 4), () async {
-            modalFinalizacaoJogo(context, moneyLevel[jogarController.moneyLevel - 1 < 0 ? 0 : jogarController.moneyLevel - 1], jogarController.moneyLevel);
+            modalFinalizacaoJogo(context, moneyLevel[jogarController.moneyLevel - 1 < 0 ? 0 : jogarController.moneyLevel - 1], jogarController.moneyLevel, audioPlayer);
           });
         }
       },
@@ -221,7 +224,7 @@ class JogarWidgets {
         });
   }
 
-  void modalFinalizacaoJogo(BuildContext context, int indexMoney, int questao) {
+  void modalFinalizacaoJogo(BuildContext context, int indexMoney, int questao, AudioPlayer audioPlayer) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -239,93 +242,92 @@ class JogarWidgets {
                   const SizedBox(
                     height: 5.0,
                   ),
-                  Text(
-                    "RESUMO DA RODADA",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.w700, fontSize: 12),
-                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Moedas ganhas",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.w700, fontSize: 12),
-                        ),
-                        Text(
-                          indexMoney.toString(),
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 17),
-                        ),
-                      ],
+                    child: Text(
+                      "RESUMO DA RODADA",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.w700, fontSize: 12),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Perguntas acertadas",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.w700, fontSize: 12),
-                        ),
-                        Text(
-                          questao.toString(),
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 17),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Divider(
+                  detalhePartidaResumoMenu("Moedas ganhas", indexMoney.toString()),
+                  detalhePartidaResumoMenu("Questões acertadas", questao.toString()),
+                  const Divider(
                     color: Colors.grey,
                     height: 4.0,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        child: Container(
-                          width: getSize(context).width * 0.35,
-                          padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            "Menu",
-                            style: TextStyle(color: Colors.white),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      InkWell(
-                        child: Container(
-                          width: getSize(context).width * 0.35,
-                          padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
-                          decoration: BoxDecoration(
-                            color: Colors.green[900],
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            "Jogar Novamente",
-                            style: TextStyle(color: Colors.white),
-                            textAlign: TextAlign.center,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            NavigatorController().navigatorToNoReturnNoAnimated(context, const HomeScreen());
+                          },
+                          child: Container(
+                            width: 130,
+                            padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Text(
+                              "Menu",
+                              style: TextStyle(color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            NavigatorController().navigatorToNoReturnNoAnimated(context, JogarScreen(audioPlayer));
+                          },
+                          child: Container(
+                            width: 130,
+                            padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                            decoration: BoxDecoration(
+                              color: Colors.green[900],
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Text(
+                              "Jogar Novamente",
+                              style: TextStyle(color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
           );
         });
+  }
+
+  Widget detalhePartidaResumoMenu( String key, String value) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            key,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.w700, fontSize: 12),
+          ),
+          Text(
+            value,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 17),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -14,18 +14,18 @@ class JogarController {
   int moneyLevel = 0;
   int nextMoneyLevel = 1;
   AudioPlayer audioPlayer;
-  Perguntas perguntaAtual = litaPerguntas[Random().nextInt(litaPerguntas.length)];
+  late Perguntas perguntaAtual;
 
   JogarController(this.audioPlayer);
 
   void sortearPergunta() {
     int index = Random().nextInt(litaPerguntas.length);
     index = Random().nextInt(litaPerguntas.length);
-    while (indexJaSorteados.contains(index)){
+    while (indexJaSorteados.contains(index)) {
       index = Random().nextInt(litaPerguntas.length);
     }
     indexJaSorteados.add(index);
-    perguntaAtual = litaPerguntas[index];
+    perguntaAtual = Perguntas(litaPerguntas[index].pergunta, litaPerguntas[index].respostas, litaPerguntas[index].indexResposta);
   }
 
   Future<void> acertouPergunta(BuildContext context) async {
@@ -48,5 +48,25 @@ class JogarController {
       audioPlayer = await audioCache.play("errou.mp3");
       RestartScreenHotRestart(context);
     });
+  }
+
+  void eliminarDuasRespostas() {
+    String resposta = perguntaAtual.respostas[perguntaAtual.indexResposta];
+    List<String> respostas = [perguntaAtual.respostas[perguntaAtual.indexResposta]];
+    int result = Random().nextInt(perguntaAtual.respostas.length - 1);
+
+    while (result == perguntaAtual.indexResposta) {
+      result = Random().nextInt(perguntaAtual.respostas.length - 1);
+    }
+    respostas.add(perguntaAtual.respostas[result]);
+    respostas.shuffle();
+
+    for (var i = 0; i < respostas.length; i++) {
+      if (resposta == respostas[i]) {
+        perguntaAtual.indexResposta = i;
+      }
+    }
+
+    perguntaAtual.respostas = respostas;
   }
 }

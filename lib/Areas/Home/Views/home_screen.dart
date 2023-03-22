@@ -34,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         shadowColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         actions: [
@@ -45,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               homeWidgets.imagemLogoJogoMilhao(context),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               homeWidgets.botaoHomeScreen(" Jogar", () {
                 NavigatorController().navigatorToNoReturnNoAnimated(context, JogarScreen(playerAudio));
               }, Icons.play_arrow_rounded),

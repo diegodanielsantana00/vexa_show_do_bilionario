@@ -24,11 +24,19 @@ class _JogarScreenState extends State<JogarScreen> {
   HomeWidgets homeWidgets = HomeWidgets();
   LojaWidgets lojaWidgets = LojaWidgets();
   JogarWidgets jogarWidgets = JogarWidgets();
+  late bool retirarDois;
+  late bool universitarios;
+  late bool estatistica;
+  late bool passarPergunta;
   JogarController? jogarController;
 
   @override
   void initState() {
     StartAudio();
+    retirarDois = true;
+    universitarios = true;
+    estatistica = true;
+    passarPergunta = true;
     jogarController = JogarController(widget.audioPlayer);
     jogarController!.sortearPergunta();
     super.initState();
@@ -36,7 +44,7 @@ class _JogarScreenState extends State<JogarScreen> {
 
   StartAudio() async {
     widget.audioPlayer.stop();
-    widget.audioPlayer = await player.loop("espera_pergunta.wav");
+    //widget.audioPlayer = await player.loop("espera_pergunta.wav");
   }
 
   @override
@@ -52,7 +60,7 @@ class _JogarScreenState extends State<JogarScreen> {
             widget.audioPlayer.stop();
             NavigatorController().navigatorToNoReturnNoAnimated(context, HomeScreen());
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.cancel_outlined,
             color: Colors.white,
           ),
@@ -68,14 +76,23 @@ class _JogarScreenState extends State<JogarScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  jogarWidgets.botaoAjudaContainer(context, Icons.looks_two),
-                  jogarWidgets.botaoAjudaContainer(context, Icons.accessibility_new_outlined),
-                  jogarWidgets.botaoAjudaContainer(context, Icons.stacked_bar_chart),
-                  jogarWidgets.botaoAjudaContainer(context, Icons.shortcut_rounded),
+                  GestureDetector(
+                      onTap: () {
+                        if (retirarDois) {
+                          jogarController!.eliminarDuasRespostas();
+                          setState(() {
+                            retirarDois = false;
+                          });
+                        }
+                      },
+                      child: jogarWidgets.botaoAjudaContainer(context, Icons.looks_two, retirarDois)),
+                  // jogarWidgets.botaoAjudaContainer(context, Icons.accessibility_new_outlined, universitarios),
+                  // jogarWidgets.botaoAjudaContainer(context, Icons.stacked_bar_chart, estatistica),
+                  // jogarWidgets.botaoAjudaContainer(context, Icons.shortcut_rounded, passarPergunta),
                 ],
               ),
               for (int i = 0; i < jogarController!.perguntaAtual.respostas.length; i++)
-                jogarWidgets.respostaContainer(context, jogarController!.perguntaAtual.respostas[i], jogarController!.perguntaAtual.indexResposta == i, jogarController!, i),
+                jogarWidgets.respostaContainer(context, jogarController!.perguntaAtual.respostas[i], jogarController!.perguntaAtual.indexResposta == i, jogarController!, i, widget.audioPlayer),
             ],
           ),
         ),
