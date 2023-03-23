@@ -73,6 +73,8 @@ class _JogarScreenState extends State<JogarScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               jogarWidgets.perguntaContainer(context, jogarController!.perguntaAtual.pergunta, jogarController!.moneyLevel, jogarController!.nextMoneyLevel),
+              jogarWidgets.universitariosDica(context, jogarController!.stringUniversitarios, jogarController!.boolUniversitarios),
+              jogarWidgets.estatisticaDica(context, jogarController!.listStringEstatisca, jogarController!.boolEstatistica),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -86,9 +88,39 @@ class _JogarScreenState extends State<JogarScreen> {
                         }
                       },
                       child: jogarWidgets.botaoAjudaContainer(context, Icons.looks_two, retirarDois)),
-                  // jogarWidgets.botaoAjudaContainer(context, Icons.accessibility_new_outlined, universitarios),
-                  // jogarWidgets.botaoAjudaContainer(context, Icons.stacked_bar_chart, estatistica),
-                  // jogarWidgets.botaoAjudaContainer(context, Icons.shortcut_rounded, passarPergunta),
+
+                  GestureDetector(
+                      onTap: () {
+                        if (universitarios) {
+                          jogarController!.chamarUniversitarios(context);
+                          setState(() {
+                            universitarios = false;
+                          });
+                        }
+                      },
+                      child: jogarWidgets.botaoAjudaContainer(context, Icons.accessibility_new_outlined, universitarios)),
+
+                  GestureDetector(
+                      onTap: () {
+                        if (estatistica) {
+                          jogarController!.mostrarEstatistica(context);
+                          setState(() {
+                            estatistica = false;
+                          });
+                        }
+                      },
+                      child: jogarWidgets.botaoAjudaContainer(context, Icons.stacked_bar_chart, estatistica)),
+
+                      GestureDetector(
+                      onTap: () {
+                        if (passarPergunta) {
+                          jogarController!.passarPergunta(context);
+                          setState(() {
+                            passarPergunta = false;
+                          });
+                        }
+                      },
+                      child: jogarWidgets.botaoAjudaContainer(context, Icons.shortcut_rounded, passarPergunta)),
                 ],
               ),
               for (int i = 0; i < jogarController!.perguntaAtual.respostas.length; i++)

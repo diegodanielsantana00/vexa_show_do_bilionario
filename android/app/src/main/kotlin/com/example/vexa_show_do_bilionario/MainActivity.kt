@@ -1,4 +1,4 @@
-package com.example.vexa_show_do_bilionario
+package com.danieldiego.vexa_show_do_bilionario
 
 import io.flutter.embedding.android.FlutterActivity
 

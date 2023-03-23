@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.vexa_show_do_bilionario">
+    package="com.danieldiego.vexa_show_do_bilionario">
    <application
-        android:label="vexa_show_do_bilionario"
+        android:label="Show do Bilhão"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

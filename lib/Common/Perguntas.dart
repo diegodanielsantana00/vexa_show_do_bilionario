@@ -40,4 +40,8 @@ List<Perguntas> litaPerguntas = [
   Perguntas("Qual é o nome da tabela onde se apresentam os elementos químicos? ", ["Geográfia", "Matemática", "Periódica", "Estatística"], 2),
   Perguntas("Em um incêndio, qual lugar devemos dar preferência para fugir do fogo? ", ["Saída De Emergência", "Armário", "Corredor", "Elevador"], 0),
   Perguntas("Na linguagem popular tetéia é uma pessoa ", ["Manhosa", "Chorona", "Infeliz", "Graciosa"], 3),
+  Perguntas("Qual é o feminino de frade? ", ["Pitonisa", "Freira", "Padre", "Sacerdotisa"], 1),
+  Perguntas("Como ficou conhecido o período no qual o café era o principal produto brasileiro?", ["Ciclo do cacau", "Ciclo do carbono", "Ciclo da cafeína", "Ciclo da café"], 3),
+  Perguntas("O termo 'cabra-macho' refere-se a um indivíduo:", ["Tímido", "Valente", "Fraco", "Medroso"], 1),
+  Perguntas("A palavra 'muito' constitui um:", ["Verbo", "Adjetivo", "Substantivo", "Advébio"], 3),
 ];

@@ -14,6 +14,10 @@ class JogarController {
   int moneyLevel = 0;
   int nextMoneyLevel = 1;
   AudioPlayer audioPlayer;
+  String stringUniversitarios = "";
+  List<String> listStringEstatisca = [];
+  bool boolEstatistica = false;
+  bool boolUniversitarios = false;
   late Perguntas perguntaAtual;
 
   JogarController(this.audioPlayer);
@@ -35,6 +39,8 @@ class JogarController {
       audioPlayer = await audioCache.play("acertou.mp3");
     });
     Future.delayed(const Duration(seconds: 4), () async {
+      boolUniversitarios = false;
+      boolEstatistica = false;
       moneyLevel++;
       nextMoneyLevel++;
       sortearPergunta();
@@ -45,6 +51,8 @@ class JogarController {
     AudioCache audioCache = AudioCache();
     audioPlayer = await audioCache.play("suspense_espera_resposta.wav");
     Future.delayed(const Duration(seconds: 3), () async {
+      boolEstatistica = false;
+      boolUniversitarios = false;
       audioPlayer = await audioCache.play("errou.mp3");
       RestartScreenHotRestart(context);
     });
@@ -68,5 +76,46 @@ class JogarController {
     }
 
     perguntaAtual.respostas = respostas;
+  }
+
+  void chamarUniversitarios(BuildContext context) {
+    String resposta = perguntaAtual.respostas[perguntaAtual.indexResposta];
+    stringUniversitarios = "Acho que é $resposta";
+    boolUniversitarios = true;
+    RestartScreenHotRestart(context);
+  }
+
+  void passarPergunta(BuildContext context) {
+    boolUniversitarios = false;
+    boolEstatistica = false;
+    sortearPergunta();
+    RestartScreenHotRestart(context);
+  }
+
+  void mostrarEstatistica(BuildContext context) {
+    boolEstatistica = true;
+    listStringEstatisca = [];
+    int soma = 0;
+    for (var i = 0; i < perguntaAtual.respostas.length; i++) {
+      int porcetagem = Random().nextInt(15);
+      if (i == perguntaAtual.indexResposta) {
+        porcetagem = Random().nextInt(100);
+        while (porcetagem < 70) {
+          porcetagem = Random().nextInt(100);
+        }
+      }
+      soma += porcetagem;
+      listStringEstatisca.add(porcetagem.toString());
+    }
+
+    if (soma < 0) {
+      int resto = 100 - soma;
+      listStringEstatisca[perguntaAtual.indexResposta] = (int.parse(listStringEstatisca[perguntaAtual.indexResposta]) + resto).toString();
+    } else {
+      int resto = soma - 100;
+      listStringEstatisca[perguntaAtual.indexResposta] = (int.parse(listStringEstatisca[perguntaAtual.indexResposta]) - resto).toString();
+    }
+
+    RestartScreenHotRestart(context);
   }
 }

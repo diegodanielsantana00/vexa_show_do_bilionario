@@ -310,7 +310,7 @@ class JogarWidgets {
         });
   }
 
-  Widget detalhePartidaResumoMenu( String key, String value) {
+  Widget detalhePartidaResumoMenu(String key, String value) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -330,4 +330,71 @@ class JogarWidgets {
       ),
     );
   }
+
+  Widget universitariosDica(BuildContext context, String stringUniversitarios, bool visible) {
+    return Visibility(
+      visible: visible,
+      child: Container(
+        width: getSize(context).width * 0.9,
+        height: 60,
+        decoration: BoxDecoration(color: Colors.white.withOpacity(0.1), borderRadius: BorderRadius.circular(20)),
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.accessibility_new_outlined,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                stringUniversitarios,
+                style: const TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget estatisticaDica(BuildContext context, List<String> porcentagem, bool visible) {
+    return Visibility(
+      visible: visible,
+      child: Container(
+        width: getSize(context).width * 0.9,
+        height: 120,
+        decoration: BoxDecoration(color: Colors.white.withOpacity(0.1), borderRadius: BorderRadius.circular(20)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(top: 8.0),
+              child: Text(
+                "Perguntas",
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0, left: 30.0, right: 30.0, top: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  for (int i = 0; i < porcentagem.length; i++)
+                    Text(
+                      "${i+1}\n\n${porcentagem[i]}%",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
 }
