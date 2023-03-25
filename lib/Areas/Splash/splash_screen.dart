@@ -2,9 +2,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:in_app_review/in_app_review.dart';
+import 'package:vexa_show_do_bilionario/Areas/Home/Models/User.dart';
 
 import 'package:vexa_show_do_bilionario/Areas/Home/Views/home_screen.dart';
 import 'package:vexa_show_do_bilionario/Common/Navigator.dart';
+
+import '../../Common/SQLiteHelper.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -40,6 +44,17 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     StartProcess() async {
       try {
+      List<User> aux = await DatabaseHelper().getUser();
+  final InAppReview inAppReview = InAppReview.instance;
+
+if (aux.isNotEmpty) {
+        
+        if (await inAppReview.isAvailable()) {
+          inAppReview.requestReview();
+        }
+      } else {
+        await DatabaseHelper().insertDatabase("user", User(id: 1, qtd_play: 0, money: 100, token_premium: ""));
+      }
         final result = await InternetAddress.lookup('google.com.br');
         if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
           Future.delayed(Duration(seconds: 2), () {

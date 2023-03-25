@@ -1,19 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:vexa_show_do_bilionario/Areas/Home/Controller/views_controller.dart';
+import 'package:vexa_show_do_bilionario/Areas/Home/Models/User.dart';
 import 'package:vexa_show_do_bilionario/Common/GlobalFunctions.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:in_app_review/in_app_review.dart';
+import 'package:vexa_show_do_bilionario/Common/SQLiteHelper.dart';
 
 class HomeWidgets {
   Widget actionMoedasQuantidades() {
-    return Row(
-      children: const [
-        Icon(
-          Icons.money,
-          color: Colors.amber,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text("1000 Moedas"),
-        )
-      ],
+    return FutureBuilder<List<User>>(
+      future: DatabaseHelper().getUser(),
+      builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
+        List<Widget> children;
+        if (snapshot.hasData) {
+          return Row(
+            children: [
+              Icon(
+                Icons.money,
+                color: Colors.amber,
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(snapshot.data![0].money.toString()),
+              )
+            ],
+          );
+        } else if (snapshot.hasError) {
+          children = <Widget>[
+            const Icon(
+              Icons.error_outline,
+              color: Colors.red,
+              size: 60,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Text('Error: ${snapshot.error}'),
+            )
+          ];
+        } else {
+          children = const <Widget>[
+            SizedBox(
+              width: 60,
+              height: 60,
+              child: CircularProgressIndicator(),
+            ),
+          ];
+        }
+        return Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: children,
+          ),
+        );
+      },
     );
   }
 
@@ -22,19 +61,28 @@ class HomeWidgets {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Share.share('Estou jogando o jogo do bilhão 💵🤑 -- https://play.google.com/store/apps/details?id=com.danieldiego.vexa_show_do_bilionario');
+            },
             icon: const Icon(
               Icons.share,
               color: Colors.white,
             )),
         IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              final InAppReview inAppReview = InAppReview.instance;
+              if (await inAppReview.isAvailable()) {
+                inAppReview.requestReview();
+              }
+            },
             icon: const Icon(
               Icons.star,
               color: Colors.white,
             )),
         IconButton(
-            onPressed: () {},
+            onPressed: () {
+              ViewsController().launchURL('https://bit.ly/3m3fUeO');
+            },
             icon: const Icon(
               Icons.telegram_outlined,
               color: Colors.white,

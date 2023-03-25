@@ -6,6 +6,7 @@ import 'package:vexa_show_do_bilionario/Areas/Jogar/Views/jogar_screen.dart';
 import 'package:vexa_show_do_bilionario/Common/GlobalFunctions.dart';
 import 'package:vexa_show_do_bilionario/Common/Navigator.dart';
 import 'package:vexa_show_do_bilionario/Common/Perguntas.dart';
+import 'package:vexa_show_do_bilionario/Common/SQLiteHelper.dart';
 
 class JogarWidgets {
   Widget perguntaContainer(BuildContext context, String pergunta, int moneyInt, int moneyProximo) {
@@ -225,6 +226,7 @@ class JogarWidgets {
   }
 
   void modalFinalizacaoJogo(BuildContext context, int indexMoney, int questao, AudioPlayer audioPlayer) {
+    DatabaseHelper().UpdateFimPartida(indexMoney);
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -361,40 +363,42 @@ class JogarWidgets {
   }
 
   Widget estatisticaDica(BuildContext context, List<String> porcentagem, bool visible) {
-    return Visibility(
-      visible: visible,
-      child: Container(
-        width: getSize(context).width * 0.9,
-        height: 120,
-        decoration: BoxDecoration(color: Colors.white.withOpacity(0.1), borderRadius: BorderRadius.circular(20)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(top: 8.0),
-              child: Text(
-                "Perguntas",
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Visibility(
+        visible: visible,
+        child: Container(
+          width: getSize(context).width * 0.9,
+          height: 120,
+          decoration: BoxDecoration(color: Colors.white.withOpacity(0.1), borderRadius: BorderRadius.circular(20)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(top: 8.0),
+                child: Text(
+                  "Perguntas",
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0, left: 30.0, right: 30.0, top: 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  for (int i = 0; i < porcentagem.length; i++)
-                    Text(
-                      "${i+1}\n\n${porcentagem[i]}%",
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                ],
-              ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0, left: 30.0, right: 30.0, top: 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    for (int i = 0; i < porcentagem.length; i++)
+                      Text(
+                        "${i + 1}\n\n${porcentagem[i]}%",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
-
 }
