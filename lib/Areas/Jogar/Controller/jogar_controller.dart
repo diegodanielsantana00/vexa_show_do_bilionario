@@ -3,7 +3,6 @@
 import 'dart:ffi';
 import 'dart:math';
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Models/Perguntas.dart';
 import 'package:vexa_show_do_bilionario/Common/GlobalFunctions.dart';
@@ -13,14 +12,12 @@ class JogarController {
   List<int> indexJaSorteados = [];
   int moneyLevel = 0;
   int nextMoneyLevel = 1;
-  AudioPlayer audioPlayer;
   String stringUniversitarios = "";
   List<String> listStringEstatisca = [];
   bool boolEstatistica = false;
   bool boolUniversitarios = false;
   late Perguntas perguntaAtual;
 
-  JogarController(this.audioPlayer);
 
   void sortearPergunta() {
     int index = Random().nextInt(litaPerguntas.length);
@@ -33,11 +30,7 @@ class JogarController {
   }
 
   Future<void> acertouPergunta(BuildContext context) async {
-    AudioCache audioCache = AudioCache();
-    audioPlayer = await audioCache.play("suspense_espera_resposta.wav");
-    Future.delayed(const Duration(seconds: 2), () async {
-      audioPlayer = await audioCache.play("acertou.mp3");
-    });
+    
     Future.delayed(const Duration(seconds: 4), () async {
       boolUniversitarios = false;
       boolEstatistica = false;
@@ -48,12 +41,9 @@ class JogarController {
   }
 
   Future<void> errouPergunta(BuildContext context) async {
-    AudioCache audioCache = AudioCache();
-    audioPlayer = await audioCache.play("suspense_espera_resposta.wav");
     Future.delayed(const Duration(seconds: 3), () async {
       boolEstatistica = false;
       boolUniversitarios = false;
-      audioPlayer = await audioCache.play("errou.mp3");
       RestartScreenHotRestart(context);
     });
   }

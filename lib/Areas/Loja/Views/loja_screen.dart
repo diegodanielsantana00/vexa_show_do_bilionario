@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Widgets/home_widgets.dart';
+import 'package:vexa_show_do_bilionario/Areas/Loja/Controller/loja_controller.dart';
 import 'package:vexa_show_do_bilionario/Areas/Loja/Widgets/loja_widgets.dart';
 import 'package:vexa_show_do_bilionario/Common/Navigator.dart';
 
@@ -20,7 +21,7 @@ class _LojaScreenState extends State<LojaScreen> {
     return Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
-        actions: [homeWidgets.actionMoedasQuantidades()],
+        actions: [homeWidgets.actionMoedasQuantidades(true)],
         automaticallyImplyLeading: false,
         shadowColor: Colors.transparent,
         backgroundColor: Colors.transparent,

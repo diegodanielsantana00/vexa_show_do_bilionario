@@ -7,7 +7,7 @@ import 'package:in_app_review/in_app_review.dart';
 import 'package:vexa_show_do_bilionario/Common/SQLiteHelper.dart';
 
 class HomeWidgets {
-  Widget actionMoedasQuantidades() {
+  Widget actionMoedasQuantidades(bool vidaextra) {
     return FutureBuilder<List<User>>(
       future: DatabaseHelper().getUser(),
       builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
@@ -15,14 +15,22 @@ class HomeWidgets {
         if (snapshot.hasData) {
           return Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.money,
                 color: Colors.amber,
               ),
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(snapshot.data![0].money.toString()),
-              )
+              ),
+              vidaextra ? const Icon(
+                Icons.heart_broken,
+                color: Colors.amber,
+              ) : const SizedBox(),
+              vidaextra ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(snapshot.data![0].qtd_vida.toString()),
+              ): const SizedBox()
             ],
           );
         } else if (snapshot.hasError) {

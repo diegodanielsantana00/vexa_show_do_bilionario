@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Views/home_screen.dart';
 import 'package:vexa_show_do_bilionario/Areas/Jogar/Controller/jogar_controller.dart';
@@ -119,7 +118,7 @@ class JogarWidgets {
 
   List<Color> colorBotaoAux = [Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.1)];
 
-  Widget respostaContainer(BuildContext context, String resposta, bool certa, JogarController jogarController, int index, AudioPlayer audioPlayer) {
+  Widget respostaContainer(BuildContext context, String resposta, bool certa, JogarController jogarController, int index) {
     return GestureDetector(
       onTap: () async {
         colorBotaoAux[index] = Colors.amber.withOpacity(0.4);
@@ -137,13 +136,13 @@ class JogarWidgets {
               modalNiveis(context, jogarController.moneyLevel);
             });
           } else {
-            modalFinalizacaoJogo(context, moneyLevel[jogarController.nextMoneyLevel], jogarController.nextMoneyLevel, audioPlayer);
+            modalFinalizacaoJogo(context, moneyLevel[jogarController.nextMoneyLevel], jogarController.nextMoneyLevel);
           }
         } else {
           await jogarController.errouPergunta(context);
           colorBotaoAux[index] = Colors.red[900]!;
           Future.delayed(const Duration(seconds: 4), () async {
-            modalFinalizacaoJogo(context, moneyLevel[jogarController.moneyLevel - 1 < 0 ? 0 : jogarController.moneyLevel - 1], jogarController.moneyLevel, audioPlayer);
+            modalFinalizacaoJogo(context, moneyLevel[jogarController.moneyLevel - 1 < 0 ? 0 : jogarController.moneyLevel - 1], jogarController.moneyLevel);
           });
         }
       },
@@ -225,7 +224,7 @@ class JogarWidgets {
         });
   }
 
-  void modalFinalizacaoJogo(BuildContext context, int indexMoney, int questao, AudioPlayer audioPlayer) {
+  void modalFinalizacaoJogo(BuildContext context, int indexMoney, int questao) {
     DatabaseHelper().UpdateFimPartida(indexMoney);
     showDialog(
         context: context,
@@ -286,7 +285,7 @@ class JogarWidgets {
                         ),
                         InkWell(
                           onTap: () {
-                            NavigatorController().navigatorToNoReturnNoAnimated(context, JogarScreen(audioPlayer));
+                            NavigatorController().navigatorToNoReturnNoAnimated(context, JogarScreen());
                           },
                           child: Container(
                             width: 130,

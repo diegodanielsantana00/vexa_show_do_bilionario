@@ -53,7 +53,7 @@ if (aux.isNotEmpty) {
           inAppReview.requestReview();
         }
       } else {
-        await DatabaseHelper().insertDatabase("user", User(id: 1, qtd_play: 0, money: 100, token_premium: ""));
+        await DatabaseHelper().insertDatabase("user", User(id: 1, qtd_play: 0, qtd_vida: 2, money: 100, token_premium: ""));
       }
         final result = await InternetAddress.lookup('google.com.br');
         if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {

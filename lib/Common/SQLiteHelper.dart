@@ -23,7 +23,8 @@ class DatabaseHelper {
   }
 
   void _createDatabase(Database db, int version) async {
-    await db.execute("CREATE TABLE user(id INTEGER primary key autoincrement, qtd_play BIGINT, money BIGINT, token_premium TEXT, pix_date STRING, pix_qrcode TEXT, paymentID TEXT, email TEXT);");
+    await db.execute(
+        "CREATE TABLE user(id INTEGER primary key autoincrement, qtd_play BIGINT, qtd_vida BIGINT, money BIGINT, token_premium TEXT, pix_date STRING, pix_qrcode TEXT, paymentID TEXT, email TEXT);");
   }
 
   Future<int> insertDatabase(String table, dynamic object, {Database? database2}) async {
@@ -51,6 +52,10 @@ class DatabaseHelper {
 
   Future<void> UpdateFimPartida(int money) async {
     executeStringLocal("UPDATE user SET qtd_play = qtd_play+1, money = money+$money");
+  }
+
+  Future<void> UpdateVidaExtra() async {
+    await executeStringLocal("UPDATE user SET qtd_vida = qtd_vida+1, money = money-1500");
   }
 
   Future<List<User>> getUser() async {

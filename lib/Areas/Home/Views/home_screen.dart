@@ -13,18 +13,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final player = AudioCache();
-  AudioPlayer playerAudio = AudioPlayer();
 
   @override
   void initState() {
-    // TODO: implement initState
     StartAudio();
     super.initState();
   }
 
   StartAudio() async {
-    playerAudio = await player.loop("inicio.mp3");
+    
+
   }
 
   @override
@@ -38,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
         shadowColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         actions: [
-          homeWidgets.actionMoedasQuantidades(),
+          homeWidgets.actionMoedasQuantidades(false),
         ],
       ),
       body: SingleChildScrollView(
@@ -48,7 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
               homeWidgets.imagemLogoJogoMilhao(context),
               const SizedBox(height: 50),
               homeWidgets.botaoHomeScreen(" Jogar", () {
-                NavigatorController().navigatorToNoReturnNoAnimated(context, JogarScreen(playerAudio));
+                //DatabaseHelper().UpdateFimPartida(1000000);
+                NavigatorController().navigatorToNoReturnNoAnimated(context, JogarScreen());
               }, Icons.play_arrow_rounded),
               homeWidgets.botaoHomeScreen(" Loja", () {
                 NavigatorController().navigatorToReturn(context, LojaScreen());

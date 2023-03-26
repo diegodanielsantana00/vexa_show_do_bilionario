@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -12,15 +11,13 @@ import 'package:vexa_show_do_bilionario/Common/GlobalFunctions.dart';
 import 'package:vexa_show_do_bilionario/Common/Navigator.dart';
 
 class JogarScreen extends StatefulWidget {
-  AudioPlayer audioPlayer;
-  JogarScreen(this.audioPlayer, {super.key});
+  JogarScreen( {super.key});
 
   @override
   State<JogarScreen> createState() => _JogarScreenState();
 }
 
 class _JogarScreenState extends State<JogarScreen> {
-  final player = AudioCache();
   HomeWidgets homeWidgets = HomeWidgets();
   LojaWidgets lojaWidgets = LojaWidgets();
   JogarWidgets jogarWidgets = JogarWidgets();
@@ -32,20 +29,16 @@ class _JogarScreenState extends State<JogarScreen> {
 
   @override
   void initState() {
-    StartAudio();
     retirarDois = true;
     universitarios = true;
     estatistica = true;
     passarPergunta = true;
-    jogarController = JogarController(widget.audioPlayer);
+    jogarController = JogarController();
     jogarController!.sortearPergunta();
     super.initState();
   }
 
-  StartAudio() async {
-    widget.audioPlayer.stop();
-    //widget.audioPlayer = await player.loop("espera_pergunta.wav");
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +50,6 @@ class _JogarScreenState extends State<JogarScreen> {
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
-            widget.audioPlayer.stop();
             NavigatorController().navigatorToNoReturnNoAnimated(context, HomeScreen());
           },
           icon: const Icon(
@@ -124,7 +116,7 @@ class _JogarScreenState extends State<JogarScreen> {
                 ],
               ),
               for (int i = 0; i < jogarController!.perguntaAtual.respostas.length; i++)
-                jogarWidgets.respostaContainer(context, jogarController!.perguntaAtual.respostas[i], jogarController!.perguntaAtual.indexResposta == i, jogarController!, i, widget.audioPlayer),
+                jogarWidgets.respostaContainer(context, jogarController!.perguntaAtual.respostas[i], jogarController!.perguntaAtual.indexResposta == i, jogarController!, i),
             ],
           ),
         ),
