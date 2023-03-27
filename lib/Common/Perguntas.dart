@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:vexa_show_do_bilionario/Areas/Home/Models/Config.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Models/Perguntas.dart';
 
@@ -85,19 +87,55 @@ List<Perguntas> litaPerguntas = [
   Perguntas("Qual destes países é transcontinental?", ["Filipinas", "Marrocos", "Rússia", "Groenlândia"], 2),
   Perguntas("Em qual das orações abaixo a palavra foi empregada incorretamente?", ["É um mau vendedor.", "Esse é o mal de todos.", "É um homem mal.", "Mais uma vez, portou-se mal."], 2),
   Perguntas("Qual foi o recurso utilizado inicialmente pelo homem para explicar a origem das coisas?", ["A Filosofia", "A Biologia", "A Mitologia", "A Astronomia"], 2),
-  Perguntas("", ["", "", "", ""], 99),
-  Perguntas("", ["", "", "", ""], 99),
-  Perguntas("", ["", "", "", ""], 99),
-  Perguntas("", ["", "", "", ""], 99),
-  Perguntas("", ["", "", "", ""], 99),
-
-
-
-
-
-
-
-
+  Perguntas("Qual era o nome de Aleijadinho?", ["Alexandrino Francisco Lisboa", "Manuel Francisco Lisboa", "Alex Francisco Lisboa", "Antônio Francisco Lisboa"], 3),
+  Perguntas("Júpiter e Plutão são os correlatos romanos de quais deuses gregos?", ["Dionísio e Deméter", "Zeus e Hades", "Cronos e Apolo", "Ares e Hermes"], 1),
+  Perguntas("Qual o maior animal terrestre?", ["Elefante africano", "Baleia Azul", "Dinossauro", "Girafa"], 0),
+  Perguntas("Qual o tema do famoso discurso Eu Tenho um Sonho, de Martin Luther King?", ["Igualdade das raças", "Prêmio Nobel da Paz", "Intolerância religiosa", "Justiça para os menos favorecidos"], 0),
+  Perguntas("Que líder mundial ficou conhecida como “Dama de Ferro”?", ["Dilma Rousseff", "Angela Merkel", "Margaret Thatcher", "Hillary Clinton"], 3),
+  Perguntas("Quais os nomes dos três Reis Magos?", ["Gaspar, Nicolau e Natanael", "Belchior, Gaspar e Baltazar", "Belchior, Gaspar e Nataniel", "Gabriel, Benjamim e Melchior"], 1),
+  Perguntas("Quem foi a primeira pessoa a viajar no Espaço?", ["Yuri Gagarin", "A cadela Laika", "Neil Armstrong", "Marcos Pontes"], 0),
+  Perguntas("Onde se localiza Machu Picchu?", ["Colômbia", "Peru", "China", "Bolívia"], 1),
+  Perguntas("Que país tem o formato de uma bota?", ["Butão", "Brasil", "Portugal", "Itália"], 3),
+  Perguntas("Quem inventou a lâmpada?", ["Thomas Edison", "Henry Ford", "Steve Jobs", "Santos Dumont"], 0),
+  Perguntas("Quanto tempo a Terra demora para dar uma volta completa em torno dela mesma?", ["Aproximadamente 24 horas", "365 dias", "7 dias", "365 ou 366 dias"], 0),
+  Perguntas("A que temperatura a água ferve?", ["200 ºC", "100 ºC", "0 ºC", "180 ºC"], 1),
+  Perguntas("Quais são as fases da Lua?", ["Nova, cheia e superlua", "Penumbral, lunar parcial, lunar total e cheia", "Nova, cheia, minguante e lua de sangue", "Nova, crescente, cheia e minguante"], 0),
+  Perguntas("Quantos ossos temos no nosso corpo?", ["126", "206", "18", "300"], 1),
+  Perguntas("Qual o maior planeta do sistema solar?", ["Marte", "Júpiter", "Terra", "Saturno"], 1),
+  Perguntas("Um anel tem 3 pedras preciosas. Quantas pedras preciosas têm 11 anéis?", ["33", "110", "333", "30"], 0),
+  Perguntas("Qual o planeta mais próximo do Sol?", ["Netuno", "Terra", "Mercúrio", "Marte"], 2),
+  Perguntas("Quantos continentes existem?", ["2", "8", "4", "6"], 3),
+  Perguntas("Qual a maior floresta tropical do mundo?", ["Mata Atlântica", "Pampas", "Pantanal", "Floresta Amazônica"], 3),
+  Perguntas("Quais as duas línguas mais faladas no mundo?", ["Inglês e espanhol", "Inglês e mandarim chinês", "Mandarim chinês e francês", "Inglês e português"], 1),
+  Perguntas("Qual o monumento famoso pela sua inclinação?", ["Torre Eiffel", "Esfinge", "Estátua da Liberdade", "Torre de Pisa"], 3),
+  Perguntas("Kryptonita é a fraqueza de qual super-herói?", ["Batman", "Hulk", "Super-Homem", "Capitão América"], 2),
+  Perguntas("Qual a personagem mais famosa de Maurício de Sousa?", ["Mafalda", "Mônica", "Smurfette", "Magali"], 1),
+  Perguntas("Que cidade brasileira é conhecida por chover todos os dias quase à mesma hora?", ["São Paulo", "Joinville", "Belém", "Natal"], 2),
+  Perguntas("Qual o nome popular do cloreto de sódio?", ["Vinagre", "Sal de cozinha", "Papel", "Fermento"], 1),
+  Perguntas("Que animal põe o maior ovo?", ["Beija-flor", "Avestruz", "Tartaruga-gigante", "Galinha"], 1),
+  Perguntas("O que os pandas comem?", ["Bambu", "Aves, ovos e peixe", "Frutas e mel", "Carnes"], 0),
+  Perguntas("Em que país foi construído o Muro de Berlim?", ["Estados Unidos", "Alemanha", "China", "Brasil"], 1),
+  Perguntas("Em que ano foi usado um celular pela primeira vez no Brasil?", ["1900", "1990", "1890", "2000"], 1),
+  Perguntas("Em que país se anda mais de bicicleta?", ["Brasil", "Portugal", "Estados Unidos", "Países Baixos"], 3),
+  Perguntas("Qual a especialidade do otorrinolaringologista?", ["Tratamento das doenças bucais.", "Tratamento das doenças infantis.", "Tratamento das doenças da pele.", "Tratamento das doenças relacionadas a nariz, ouvido e garganta."], 3),
+  Perguntas("Qual a nacionalidade de Napoleão Bonaparte?", ["Francesa", "Brasileira", "Mexicana", "Japonesa"], 0),
+  Perguntas("Depois do futebol, qual o esporte mais popular no Brasil?", ["Esqui", "Vôlei", "Hóquei no gelo", "Golfe"], 1),
+  Perguntas("Que grande evento histórico aconteceu em 1822 no Brasil?", ["Descobrimento do Brasil", "Ditadura Militar", "Revolução de 1930", "Independência do Brasil"], 3),
+  Perguntas("O que comemora no feriado do dia 21 de abril no Brasil?", ["Natal", "Tiradentes", "Independência do Brasil", "Finados"], 1),
+  Perguntas("Em que conto de fadas uma princesa adormece com um feitiço e só acorda com o beijo de um príncipe?", ["A Bela Adormecida", "João e Maria", "Chapeuzinho Vermelho", "Patinho Feio"], 0),
+  Perguntas("Em que região se localiza o estado de Minas Gerais?", ["Sudeste", "Centro-Oeste", "Norte", "Sul"], 0),
+  Perguntas("Que fruto nasce da oliveira?", ["Amêndoa", "Azeitona", "Açaí", "Acerola"], 1),
+  Perguntas("Qual o plural de chapéu?", ["Chapéis", "Chapéus", "Chapéuzes", "Chapuzes"], 1),
+  Perguntas("Quem escreveu Os Lusíadas?", ["Carlos Drummond de Andrade", "Fernando Pessoa", "Luís Vaz de Camões", "Jorge Amado"], 2),
+  Perguntas("Barack Obama foi presidente de que país?", ["Estados Unidos da América", "Inglaterra", "Alemanha", "Rússia"], 0),
+  Perguntas("Em que país de localiza o Taj Mahal?", ["Egito", "Índia", "França", "Brasil"], 1),
+  Perguntas("Que navio famoso naufragou na sua viagem inaugural?", ["Titanic", "Antonov", "Boeing", "Airbus"], 0),
+  Perguntas("Qual o satélite natural da Terra?", ["Lua", "Ganimedes", "Sol", "Amazonia 1"], 0),
+  Perguntas("O que é um tsunami?", ["Um ciclone", "Um tornado", "Um maremoto", "Um terremoto"], 2),
+  Perguntas("Qual destas substâncias faz parte da composição do vidro?", ["Petróleo", "Fibra", "Celulose", "Areia"], 3),
+  Perguntas("Qual a nacionalidade do sociólogo e filósofo Durkheim?", ["Alemã", "Francesa", "Inglesa", "Italiana"], 1),
+  Perguntas("Lady Di era o apelido de qual personalidade?", ["Chiquinha Gonzaga", "Diana, a Princesa de Gales", "Joana d’Arc", "Grace Kelly"], 1),
+  Perguntas("Qual a primeira mulher a ganhar um prêmio Nobel?", ["Madre Teresa de Calcutá", "Elizabeth Blackweel", "Marie Curie", "Valentina Tereshkova"], 2),
 ];
 
 Config configGlobal = Config();

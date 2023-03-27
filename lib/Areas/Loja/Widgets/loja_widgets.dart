@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:vexa_show_do_bilionario/Areas/Loja/Controller/loja_controller.dart';
+import 'package:vexa_show_do_bilionario/Areas/Loja/Models/Produto.dart';
 import 'package:vexa_show_do_bilionario/Common/GlobalFunctions.dart';
 
 class LojaWidgets {
@@ -49,6 +50,56 @@ class LojaWidgets {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         preco.toString(),
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget containerProdutosLojaDinheiroReal(BuildContext context, Produto produto) {
+    return GestureDetector(
+      onTap: () async {
+        produto.id;
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          width: getSize(context).width * 0.9,
+          height: 50,
+          decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(20)), color: Colors.blue.withOpacity(0.1)),
+          child: Padding(
+            padding: const EdgeInsets.all(9.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.shopping_bag_outlined,
+                      color: Colors.white,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        produto.nome,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "R\$ " + produto.preco.toString(),
                         style: const TextStyle(color: Colors.white),
                       ),
                     )

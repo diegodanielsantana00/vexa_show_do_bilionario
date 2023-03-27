@@ -34,11 +34,19 @@ class JogarController {
     }
     indexJaSorteados.add(index);
     perguntaAtual = Perguntas(litaPerguntas[index].pergunta, litaPerguntas[index].respostas, litaPerguntas[index].indexResposta);
+
+    String stringResposta = perguntaAtual.respostas[perguntaAtual.indexResposta];
+    perguntaAtual.respostas.shuffle();
+    for (var i = 0; i < perguntaAtual.respostas.length; i++) {
+      if (stringResposta == perguntaAtual.respostas[i]) {
+        perguntaAtual.indexResposta = i;
+      }
+    }
   }
 
   Future<void> acertouPergunta(BuildContext context) async {
     FlameAudio.bgm.stop();
-    FlameAudio.play('suspense_espera_resposta.wav');
+    FlameAudio.play('suspense_espera_resposta.wav', volume: 0.4);
     Future.delayed(const Duration(milliseconds: 5300), () async {
       boolUniversitarios = false;
       boolEstatistica = false;
@@ -50,7 +58,7 @@ class JogarController {
 
   Future<void> errouPergunta(BuildContext context) async {
     FlameAudio.bgm.stop();
-    FlameAudio.play('suspense_espera_resposta.wav');
+    FlameAudio.play('suspense_espera_resposta.wav', volume: 0.4);
     boolEstatistica = false;
     boolUniversitarios = false;
   }
