@@ -56,6 +56,10 @@ class DatabaseHelper {
     executeStringLocal("UPDATE user SET qtd_play = qtd_play+1, money = money+$money");
   }
 
+  Future<void> UpdateMoney(int money) async {
+    await executeStringLocal("UPDATE user SET money = money+$money");
+  }
+
   Future<void> UpdateVidaExtra() async {
     await executeStringLocal("UPDATE user SET qtd_vida = qtd_vida+1, money = money-1500");
   }

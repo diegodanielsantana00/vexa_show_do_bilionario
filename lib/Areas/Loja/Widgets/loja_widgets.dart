@@ -12,7 +12,6 @@ class LojaWidgets {
       onTap: () async {
         await lojaController.comprarVidaExtra(context);
         RestartScreenHotRestart(context);
-        
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -64,29 +63,34 @@ class LojaWidgets {
   }
 
   Widget dinheiroGratis(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: Container(
-        width: getSize(context).width * 0.7,
-        height: 50,
-        decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(20)), color: Colors.blue.withOpacity(0.1)),
-        child: Padding(
-          padding: const EdgeInsets.all(9.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Obtenha 250 moedas grátis",
-                  style: TextStyle(color: Colors.white),
+    return GestureDetector(
+      onTap: () {
+        lojaController.loadAd(context);
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: Container(
+          width: getSize(context).width * 0.7,
+          height: 50,
+          decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(20)), color: Colors.blue.withOpacity(0.1)),
+          child: Padding(
+            padding: const EdgeInsets.all(9.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Obtenha 250 moedas grátis",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
-              Icon(
-                Icons.play_arrow_rounded,
-                color: Colors.white,
-              ),
-            ],
+                Icon(
+                  Icons.play_arrow_rounded,
+                  color: Colors.white,
+                ),
+              ],
+            ),
           ),
         ),
       ),
