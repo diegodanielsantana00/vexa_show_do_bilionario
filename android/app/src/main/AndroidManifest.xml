@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.danieldiego.vexa_show_do_bilionario">
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="Show do Bilhão"
         android:name="${applicationName}"

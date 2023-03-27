@@ -1,3 +1,4 @@
+import 'package:vexa_show_do_bilionario/Areas/Home/Models/Config.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Models/Perguntas.dart';
 
 List<int> moneyLevel = [0, 1, 3, 5, 10, 20, 30, 50, 100, 150, 250, 500, 1000];
@@ -45,3 +46,5 @@ List<Perguntas> litaPerguntas = [
   Perguntas("O termo 'cabra-macho' refere-se a um indivíduo:", ["Tímido", "Valente", "Fraco", "Medroso"], 1),
   Perguntas("A palavra 'muito' constitui um:", ["Verbo", "Adjetivo", "Substantivo", "Advébio"], 3),
 ];
+
+Config configGlobal = Config();

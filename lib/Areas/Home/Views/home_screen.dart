@@ -1,9 +1,12 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Widgets/home_widgets.dart';
 import 'package:vexa_show_do_bilionario/Areas/Jogar/Views/jogar_screen.dart';
 import 'package:vexa_show_do_bilionario/Areas/Loja/Views/loja_screen.dart';
 import 'package:vexa_show_do_bilionario/Common/Navigator.dart';
+import 'package:vexa_show_do_bilionario/Common/Perguntas.dart';
+import 'package:vexa_show_do_bilionario/Common/SQLiteHelper.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,7 +16,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   void initState() {
     StartAudio();
@@ -21,8 +23,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   StartAudio() async {
-    
-
+    await FlameAudio.bgm.stop();
+    if (!FlameAudio.bgm.isPlaying && configGlobal.music == "T") {
+      FlameAudio.bgm.play("inicio.mp3", volume: 0.1);
+    }
   }
 
   @override

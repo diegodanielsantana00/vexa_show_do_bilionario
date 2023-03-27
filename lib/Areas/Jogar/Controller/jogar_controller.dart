@@ -3,6 +3,7 @@
 import 'dart:ffi';
 import 'dart:math';
 
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Models/Perguntas.dart';
 import 'package:vexa_show_do_bilionario/Common/GlobalFunctions.dart';
@@ -18,6 +19,12 @@ class JogarController {
   bool boolUniversitarios = false;
   late Perguntas perguntaAtual;
 
+  Future<void> musicaFundo() async {
+    await FlameAudio.bgm.stop();
+    if (!FlameAudio.bgm.isPlaying && configGlobal.music == "T") {
+      FlameAudio.bgm.play("espera_pergunta.wav", volume: 0.1);
+    }
+  }
 
   void sortearPergunta() {
     int index = Random().nextInt(litaPerguntas.length);
@@ -30,8 +37,9 @@ class JogarController {
   }
 
   Future<void> acertouPergunta(BuildContext context) async {
-    
-    Future.delayed(const Duration(seconds: 4), () async {
+    FlameAudio.bgm.stop();
+    FlameAudio.play('suspense_espera_resposta.wav');
+    Future.delayed(const Duration(milliseconds: 5300), () async {
       boolUniversitarios = false;
       boolEstatistica = false;
       moneyLevel++;
@@ -41,11 +49,10 @@ class JogarController {
   }
 
   Future<void> errouPergunta(BuildContext context) async {
-    Future.delayed(const Duration(seconds: 3), () async {
-      boolEstatistica = false;
-      boolUniversitarios = false;
-      RestartScreenHotRestart(context);
-    });
+    FlameAudio.bgm.stop();
+    FlameAudio.play('suspense_espera_resposta.wav');
+    boolEstatistica = false;
+    boolUniversitarios = false;
   }
 
   void eliminarDuasRespostas() {

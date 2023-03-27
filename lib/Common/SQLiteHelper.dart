@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:vexa_show_do_bilionario/Areas/Home/Models/Config.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Models/User.dart';
 
 class DatabaseHelper {
@@ -25,6 +26,7 @@ class DatabaseHelper {
   void _createDatabase(Database db, int version) async {
     await db.execute(
         "CREATE TABLE user(id INTEGER primary key autoincrement, qtd_play BIGINT, qtd_vida BIGINT, money BIGINT, token_premium TEXT, pix_date STRING, pix_qrcode TEXT, paymentID TEXT, email TEXT);");
+    await db.execute("CREATE TABLE config(music TEXT, sound_effects TEXT);");
   }
 
   Future<int> insertDatabase(String table, dynamic object, {Database? database2}) async {
@@ -62,6 +64,12 @@ class DatabaseHelper {
     Database db = await database;
     var result = await db.query("user");
     return result.isNotEmpty ? result.map((c) => User.fromMap(c)).toList() : [];
+  }
+
+  Future<List<Config>> getConfig() async {
+    Database db = await database;
+    var result = await db.query("config");
+    return result.isNotEmpty ? result.map((c) => Config.fromMap(c)).toList() : [];
   }
 
   // Future<List<History>> getHistory() async {

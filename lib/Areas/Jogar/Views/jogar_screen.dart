@@ -1,3 +1,4 @@
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -9,9 +10,10 @@ import 'package:vexa_show_do_bilionario/Areas/Jogar/Widgets/jogar_widgets.dart';
 import 'package:vexa_show_do_bilionario/Areas/Loja/Widgets/loja_widgets.dart';
 import 'package:vexa_show_do_bilionario/Common/GlobalFunctions.dart';
 import 'package:vexa_show_do_bilionario/Common/Navigator.dart';
+import 'package:vexa_show_do_bilionario/Common/Perguntas.dart';
 
 class JogarScreen extends StatefulWidget {
-  JogarScreen( {super.key});
+  JogarScreen({super.key});
 
   @override
   State<JogarScreen> createState() => _JogarScreenState();
@@ -35,10 +37,9 @@ class _JogarScreenState extends State<JogarScreen> {
     passarPergunta = true;
     jogarController = JogarController();
     jogarController!.sortearPergunta();
+    jogarController!.musicaFundo();
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +51,7 @@ class _JogarScreenState extends State<JogarScreen> {
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
-            NavigatorController().navigatorToNoReturnNoAnimated(context, HomeScreen());
+            jogarWidgets.modalFinalizacaoJogo(context, moneyLevel[jogarController!.moneyLevel], jogarController!.moneyLevel);
           },
           icon: const Icon(
             Icons.cancel_outlined,
@@ -80,7 +81,6 @@ class _JogarScreenState extends State<JogarScreen> {
                         }
                       },
                       child: jogarWidgets.botaoAjudaContainer(context, Icons.looks_two, retirarDois)),
-
                   GestureDetector(
                       onTap: () {
                         if (universitarios) {
@@ -91,7 +91,6 @@ class _JogarScreenState extends State<JogarScreen> {
                         }
                       },
                       child: jogarWidgets.botaoAjudaContainer(context, Icons.accessibility_new_outlined, universitarios)),
-
                   GestureDetector(
                       onTap: () {
                         if (estatistica) {
@@ -102,8 +101,7 @@ class _JogarScreenState extends State<JogarScreen> {
                         }
                       },
                       child: jogarWidgets.botaoAjudaContainer(context, Icons.stacked_bar_chart, estatistica)),
-
-                      GestureDetector(
+                  GestureDetector(
                       onTap: () {
                         if (passarPergunta) {
                           jogarController!.passarPergunta(context);

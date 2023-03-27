@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Models/User.dart';
 import 'package:vexa_show_do_bilionario/Common/SQLiteHelper.dart';
@@ -10,17 +11,18 @@ class LojaController {
     List<User> aux = await DatabaseHelper().getUser();
     if (aux[0].money! >= 1500) {
       await DatabaseHelper().UpdateVidaExtra();
+      FlameAudio.play("compra.mp3");
       AwesomeDialog(
         context: context,
         dialogType: DialogType.success,
         headerAnimationLoop: true,
         animType: AnimType.bottomSlide,
-        title: 'INFO Reversed',
+        title: 'VIDA EXTRA',
+        autoHide: const Duration(seconds: 1),
         reverseBtnOrder: true,
-        btnOkOnPress: () {},
-        btnCancelOnPress: () {},
-        desc:
-            'Lorem ipsum dolor sit amet consectetur adipiscing elit eget ornare tempus, vestibulum sagittis rhoncus felis hendrerit lectus ultricies duis vel, id morbi cum ultrices tellus metus dis ut donec. Ut sagittis viverra venenatis eget euismod faucibus odio ligula phasellus,',
+        // btnOkOnPress: () {},
+        // btnCancelOnPress: () {},
+        desc: 'Compra feita.',
       ).show();
     }
   }

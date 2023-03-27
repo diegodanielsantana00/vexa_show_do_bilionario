@@ -3,10 +3,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:vexa_show_do_bilionario/Areas/Home/Models/Config.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Models/User.dart';
 
 import 'package:vexa_show_do_bilionario/Areas/Home/Views/home_screen.dart';
 import 'package:vexa_show_do_bilionario/Common/Navigator.dart';
+import 'package:vexa_show_do_bilionario/Common/Perguntas.dart';
 
 import '../../Common/SQLiteHelper.dart';
 
@@ -44,17 +46,22 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     StartProcess() async {
       try {
-      List<User> aux = await DatabaseHelper().getUser();
-  final InAppReview inAppReview = InAppReview.instance;
+        List<User> aux = await DatabaseHelper().getUser();
+        final InAppReview inAppReview = InAppReview.instance;
 
-if (aux.isNotEmpty) {
-        
-        if (await inAppReview.isAvailable()) {
-          inAppReview.requestReview();
+        if (aux.isNotEmpty) {
+          if (await inAppReview.isAvailable()) {
+            inAppReview.requestReview();
+          }
+        List<Config> aux = await DatabaseHelper().getConfig();
+
+          configGlobal = aux[0];
+
+        } else {
+          await DatabaseHelper().insertDatabase("user", User(id: 1, qtd_play: 0, qtd_vida: 2, money: 100, token_premium: ""));
+          await DatabaseHelper().insertDatabase("config", Config(music: "T", sound_effects: "T"));
+          configGlobal = Config(music: "T", sound_effects: "T");
         }
-      } else {
-        await DatabaseHelper().insertDatabase("user", User(id: 1, qtd_play: 0, qtd_vida: 2, money: 100, token_premium: ""));
-      }
         final result = await InternetAddress.lookup('google.com.br');
         if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
           Future.delayed(Duration(seconds: 2), () {

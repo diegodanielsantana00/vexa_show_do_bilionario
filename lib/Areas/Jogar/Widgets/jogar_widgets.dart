@@ -1,3 +1,4 @@
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Views/home_screen.dart';
 import 'package:vexa_show_do_bilionario/Areas/Jogar/Controller/jogar_controller.dart';
@@ -126,22 +127,31 @@ class JogarWidgets {
         if (certa) {
           if (jogarController.nextMoneyLevel + 1 != moneyLevel.length) {
             await jogarController.acertouPergunta(context);
-            Future.delayed(const Duration(seconds: 2), () async {
+            Future.delayed(const Duration(milliseconds: 3500), () async {
+              FlameAudio.play('acertou.mp3');
               colorBotaoAux[index] = Colors.green[900]!;
               RestartScreenHotRestart(context);
             });
-            Future.delayed(const Duration(seconds: 5), () async {
+            Future.delayed(const Duration(milliseconds: 5300), () async {
               colorBotaoAux[index] = Colors.blue.withOpacity(0.1);
               RestartScreenHotRestart(context);
               modalNiveis(context, jogarController.moneyLevel);
+              jogarController.musicaFundo();
             });
           } else {
             modalFinalizacaoJogo(context, moneyLevel[jogarController.nextMoneyLevel], jogarController.nextMoneyLevel);
           }
         } else {
           await jogarController.errouPergunta(context);
-          colorBotaoAux[index] = Colors.red[900]!;
-          Future.delayed(const Duration(seconds: 4), () async {
+          Future.delayed(const Duration(milliseconds: 2900), () async {
+            FlameAudio.play('errou.mp3');
+          });
+          Future.delayed(const Duration(milliseconds: 3500), () async {
+            colorBotaoAux[index] = Colors.red[900]!;
+            RestartScreenHotRestart(context);
+          });
+          Future.delayed(const Duration(milliseconds: 5300), () async {
+            jogarController.musicaFundo();
             modalFinalizacaoJogo(context, moneyLevel[jogarController.moneyLevel - 1 < 0 ? 0 : jogarController.moneyLevel - 1], jogarController.moneyLevel);
           });
         }
@@ -227,6 +237,7 @@ class JogarWidgets {
   void modalFinalizacaoJogo(BuildContext context, int indexMoney, int questao) {
     DatabaseHelper().UpdateFimPartida(indexMoney);
     showDialog(
+      barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -284,7 +295,11 @@ class JogarWidgets {
                           width: 8,
                         ),
                         InkWell(
-                          onTap: () {
+                          onTap: () async {
+                            await FlameAudio.bgm.stop();
+                            if (!FlameAudio.bgm.isPlaying && configGlobal.music == "T") {
+                              FlameAudio.bgm.play("espera_pergunta.wav", volume: 0.1);
+                            }
                             NavigatorController().navigatorToNoReturnNoAnimated(context, JogarScreen());
                           },
                           child: Container(

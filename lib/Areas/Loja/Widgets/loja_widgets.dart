@@ -12,6 +12,7 @@ class LojaWidgets {
       onTap: () async {
         await lojaController.comprarVidaExtra(context);
         RestartScreenHotRestart(context);
+        
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
