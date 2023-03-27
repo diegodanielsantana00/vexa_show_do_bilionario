@@ -45,6 +45,39 @@ List<Perguntas> litaPerguntas = [
   Perguntas("Como ficou conhecido o período no qual o café era o principal produto brasileiro?", ["Ciclo do cacau", "Ciclo do carbono", "Ciclo da cafeína", "Ciclo da café"], 3),
   Perguntas("O termo 'cabra-macho' refere-se a um indivíduo:", ["Tímido", "Valente", "Fraco", "Medroso"], 1),
   Perguntas("A palavra 'muito' constitui um:", ["Verbo", "Adjetivo", "Substantivo", "Advébio"], 3),
+  Perguntas("Qual bicho transmite Doença de Chagas?", ["Abelha", "Barata", "Pulga", "Barbeiro"], 3),
+  Perguntas("Qual fruto é conhecido no Norte e Nordeste como 'jerimum'?", ["Cajú", "ChuChu", "Abóbora", "Côco"], 2),
+  Perguntas("Qual é o coletivo de cães?", ["Matilha", "Rebanho", "Alcateia", "Manada"], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+  Perguntas("", ["", "", "", ""], 99),
+
+
+
+
+
+
+
+
 ];
 
 Config configGlobal = Config();

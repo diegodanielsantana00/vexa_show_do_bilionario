@@ -2,15 +2,15 @@ import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Models/Perguntas.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Views/home_screen.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Widgets/home_widgets.dart';
 import 'package:vexa_show_do_bilionario/Areas/Jogar/Controller/jogar_controller.dart';
 import 'package:vexa_show_do_bilionario/Areas/Jogar/Widgets/jogar_widgets.dart';
 import 'package:vexa_show_do_bilionario/Areas/Loja/Widgets/loja_widgets.dart';
-import 'package:vexa_show_do_bilionario/Common/GlobalFunctions.dart';
-import 'package:vexa_show_do_bilionario/Common/Navigator.dart';
 import 'package:vexa_show_do_bilionario/Common/Perguntas.dart';
+import 'package:vexa_show_do_bilionario/routes_private.dart';
 
 class JogarScreen extends StatefulWidget {
   JogarScreen({super.key});
@@ -22,6 +22,7 @@ class JogarScreen extends StatefulWidget {
 class _JogarScreenState extends State<JogarScreen> {
   HomeWidgets homeWidgets = HomeWidgets();
   LojaWidgets lojaWidgets = LojaWidgets();
+  BannerAd? bannerAd;
   JogarWidgets jogarWidgets = JogarWidgets();
   late bool retirarDois;
   late bool universitarios;
@@ -38,7 +39,21 @@ class _JogarScreenState extends State<JogarScreen> {
     jogarController = JogarController();
     jogarController!.sortearPergunta();
     jogarController!.musicaFundo();
+    createBannerAd();
     super.initState();
+  }
+
+
+  BannerAdListener listener = BannerAdListener(
+      onAdClosed: (ad) => debugPrint('Ad Close'),
+      onAdLoaded: (ad) => debugPrint('Ad loaded'),
+      onAdOpened: (ad) => debugPrint('Ad Opened'),
+      onAdFailedToLoad: (ad, error) {
+        ad.dispose();
+        debugPrint(error.message.toString());
+      });
+  createBannerAd() {
+    bannerAd = BannerAd(size: AdSize.fullBanner, adUnitId: BannerID, listener: listener, request: const AdRequest())..load();
   }
 
   @override
@@ -119,6 +134,12 @@ class _JogarScreenState extends State<JogarScreen> {
           ),
         ),
       ),
+                  bottomNavigationBar: bannerAd == null /*|| widget.premium*/
+          ? null
+          : Container(
+              margin: const EdgeInsets.only(bottom: 30),
+              height: 52,
+              child: AdWidget(ad: bannerAd!),)
     );
   }
 }

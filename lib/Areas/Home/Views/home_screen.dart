@@ -1,12 +1,14 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Widgets/home_widgets.dart';
 import 'package:vexa_show_do_bilionario/Areas/Jogar/Views/jogar_screen.dart';
 import 'package:vexa_show_do_bilionario/Areas/Loja/Views/loja_screen.dart';
 import 'package:vexa_show_do_bilionario/Common/Navigator.dart';
 import 'package:vexa_show_do_bilionario/Common/Perguntas.dart';
 import 'package:vexa_show_do_bilionario/Common/SQLiteHelper.dart';
+import 'package:vexa_show_do_bilionario/routes_private.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,10 +18,27 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  BannerAd? bannerAd;
+
   @override
   void initState() {
     StartAudio();
     super.initState();
+    // if (!widget.premium) {
+      createBannerAd();
+    // }
+  }
+
+  BannerAdListener listener = BannerAdListener(
+      onAdClosed: (ad) => debugPrint('Ad Close'),
+      onAdLoaded: (ad) => debugPrint('Ad loaded'),
+      onAdOpened: (ad) => debugPrint('Ad Opened'),
+      onAdFailedToLoad: (ad, error) {
+        ad.dispose();
+        debugPrint(error.message.toString());
+      });
+  createBannerAd() {
+    bannerAd = BannerAd(size: AdSize.fullBanner, adUnitId: BannerID, listener: listener, request: const AdRequest())..load();
   }
 
   StartAudio() async {
@@ -61,7 +80,15 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
+
       ),
+            bottomNavigationBar: bannerAd == null /*|| widget.premium*/
+          ? null
+          : Container(
+              margin: const EdgeInsets.only(bottom: 30),
+              height: 52,
+              child: AdWidget(ad: bannerAd!),
+            ),
     );
   }
 }

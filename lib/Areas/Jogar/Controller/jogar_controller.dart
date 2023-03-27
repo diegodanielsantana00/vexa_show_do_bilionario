@@ -22,7 +22,7 @@ class JogarController {
   Future<void> musicaFundo() async {
     await FlameAudio.bgm.stop();
     if (!FlameAudio.bgm.isPlaying && configGlobal.music == "T") {
-      FlameAudio.bgm.play("espera_pergunta.wav", volume: 0.1);
+      await FlameAudio.bgm.play("espera_pergunta.wav", volume: 0.1);
     }
   }
 
