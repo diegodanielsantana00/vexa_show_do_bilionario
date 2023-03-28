@@ -26,7 +26,7 @@ DialogShowAwait(context) {
     barrierDismissible: false,
     builder: (BuildContext context) {
       return Dialog(
-        child: new Row(
+        child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

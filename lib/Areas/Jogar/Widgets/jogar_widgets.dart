@@ -1,5 +1,6 @@
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
+import 'package:vexa_show_do_bilionario/Areas/Home/Models/User.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Views/home_screen.dart';
 import 'package:vexa_show_do_bilionario/Areas/Jogar/Controller/jogar_controller.dart';
 import 'package:vexa_show_do_bilionario/Areas/Jogar/Views/jogar_screen.dart';
@@ -123,13 +124,13 @@ class JogarWidgets {
   Widget respostaContainer(BuildContext context, String resposta, bool certa, JogarController jogarController, int index) {
     return GestureDetector(
       onTap: () async {
-        colorBotaoAux[index] = Colors.amber.withOpacity(0.4);
-        RestartScreenHotRestart(context);
         if (!disabilitado) {
+          disabilitado = true;
+          colorBotaoAux[index] = Colors.amber.withOpacity(0.4);
+          RestartScreenHotRestart(context);
           Future.delayed(const Duration(milliseconds: 5350), () async {
             disabilitado = false;
           });
-          disabilitado = true;
           if (certa) {
             if (jogarController.nextMoneyLevel + 1 != moneyLevel.length) {
               await jogarController.acertouPergunta(context);
@@ -145,7 +146,7 @@ class JogarWidgets {
                 jogarController.musicaFundo();
               });
             } else {
-              modalFinalizacaoJogo(context, moneyLevel[jogarController.nextMoneyLevel], jogarController.nextMoneyLevel);
+              modalFinalizacaoJogo(context, moneyLevel[jogarController.nextMoneyLevel], jogarController.nextMoneyLevel, -1, jogarController);
             }
           } else {
             await jogarController.errouPergunta(context);
@@ -159,7 +160,9 @@ class JogarWidgets {
             });
             Future.delayed(const Duration(milliseconds: 5300), () async {
               jogarController.musicaFundo();
-              modalFinalizacaoJogo(context, moneyLevel[jogarController.moneyLevel - 1 < 0 ? 0 : jogarController.moneyLevel - 1], jogarController.moneyLevel);
+              List<User> vidaExtra = await DatabaseHelper().getUser();
+              modalFinalizacaoJogo(
+                  context, moneyLevel[jogarController.moneyLevel - 1 < 0 ? 0 : jogarController.moneyLevel - 1], jogarController.moneyLevel, vidaExtra[0].qtd_vida ?? 0, jogarController);
             });
           }
         }
@@ -242,7 +245,7 @@ class JogarWidgets {
         });
   }
 
-  void modalFinalizacaoJogo(BuildContext context, int indexMoney, int questao) {
+  void modalFinalizacaoJogo(BuildContext context, int indexMoney, int questao, int vidaExtra, JogarController jogarController) {
     DatabaseHelper().UpdateFimPartida(indexMoney);
     bool clickButton = false;
     showDialog(
@@ -273,6 +276,53 @@ class JogarWidgets {
                   ),
                   detalhePartidaResumoMenu("Moedas ganhas", indexMoney.toString()),
                   detalhePartidaResumoMenu("Questões acertadas", questao.toString()),
+                  const Divider(
+                    color: Colors.grey,
+                    height: 4.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: () async {
+                        clickButton = true;
+                        jogarController.retornarAoJogo();
+                        colorBotaoAux = [Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.1)];
+                        DatabaseHelper().UpdateVidaExtra(false);
+                        NavigatorController().navigatorBack(context);
+                      },
+                      child: Container(
+                        width: 130,
+                        padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: const [
+                                  Icon(Icons.heart_broken_sharp, color: Colors.amber),
+                                  Text(
+                                    " Usar vida extra",
+                                    style: TextStyle(color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                "3",
+                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   const Divider(
                     color: Colors.grey,
                     height: 4.0,
@@ -334,7 +384,10 @@ class JogarWidgets {
               ),
             ),
           );
-        }).then((value) => !clickButton ? NavigatorController().navigatorToReturn(context, const HomeScreen()) : null);
+        }).then((value) {
+      !clickButton ? NavigatorController().navigatorToReturn(context, const HomeScreen()) : null;
+      !clickButton ? null : RestartScreenHotRestart(context);
+    });
   }
 
   Widget detalhePartidaResumoMenu(String key, String value) {

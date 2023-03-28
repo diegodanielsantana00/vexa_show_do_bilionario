@@ -40,7 +40,7 @@ class LojaController {
   Future<void> comprarVidaExtra(BuildContext context) async {
     List<User> aux = await DatabaseHelper().getUser();
     if (aux[0].money! >= 1500) {
-      await DatabaseHelper().UpdateVidaExtra();
+      await DatabaseHelper().UpdateVidaExtra(true);
       FlameAudio.play("compra.mp3");
       AwesomeDialog(
         context: context,

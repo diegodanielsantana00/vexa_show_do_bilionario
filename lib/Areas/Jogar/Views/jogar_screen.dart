@@ -1,15 +1,19 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Models/Perguntas.dart';
+import 'package:vexa_show_do_bilionario/Areas/Home/Models/User.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Views/home_screen.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Widgets/home_widgets.dart';
 import 'package:vexa_show_do_bilionario/Areas/Jogar/Controller/jogar_controller.dart';
 import 'package:vexa_show_do_bilionario/Areas/Jogar/Widgets/jogar_widgets.dart';
 import 'package:vexa_show_do_bilionario/Areas/Loja/Widgets/loja_widgets.dart';
 import 'package:vexa_show_do_bilionario/Common/Perguntas.dart';
+import 'package:vexa_show_do_bilionario/Common/SQLiteHelper.dart';
 import 'package:vexa_show_do_bilionario/routes_private.dart';
 
 class JogarScreen extends StatefulWidget {
@@ -65,8 +69,9 @@ class _JogarScreenState extends State<JogarScreen> {
         shadowColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          onPressed: () {
-            jogarWidgets.modalFinalizacaoJogo(context, moneyLevel[jogarController!.moneyLevel], jogarController!.moneyLevel);
+          onPressed: () async {
+            List<User> vidaExtra = await DatabaseHelper().getUser();
+            jogarWidgets.modalFinalizacaoJogo(context, moneyLevel[jogarController!.moneyLevel], jogarController!.moneyLevel, vidaExtra[0].qtd_vida??0, jogarController!);
           },
           icon: const Icon(
             Icons.cancel_outlined,

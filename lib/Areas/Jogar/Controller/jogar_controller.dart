@@ -26,6 +26,12 @@ class JogarController {
     }
   }
 
+  void retornarAoJogo() {
+    sortearPergunta();
+    boolUniversitarios = false;
+    boolEstatistica = false;
+  }
+
   void sortearPergunta() {
     int index = Random().nextInt(litaPerguntas.length);
     index = Random().nextInt(litaPerguntas.length);
