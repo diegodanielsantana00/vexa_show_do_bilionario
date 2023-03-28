@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously, prefer_const_constructors
+
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Models/User.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Views/home_screen.dart';
 import 'package:vexa_show_do_bilionario/Areas/Jogar/Controller/jogar_controller.dart';
@@ -8,9 +11,12 @@ import 'package:vexa_show_do_bilionario/Common/GlobalFunctions.dart';
 import 'package:vexa_show_do_bilionario/Common/Navigator.dart';
 import 'package:vexa_show_do_bilionario/Common/Perguntas.dart';
 import 'package:vexa_show_do_bilionario/Common/SQLiteHelper.dart';
+import 'package:vexa_show_do_bilionario/routes_private.dart';
 
 class JogarWidgets {
   bool disabilitado = false;
+  RewardedAd? _rewardedAd;
+
   Widget perguntaContainer(BuildContext context, String pergunta, int moneyInt, int moneyProximo) {
     return Stack(
       children: [
@@ -284,11 +290,35 @@ class JogarWidgets {
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
                       onTap: () async {
-                        clickButton = true;
-                        jogarController.retornarAoJogo();
-                        colorBotaoAux = [Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.1)];
-                        DatabaseHelper().UpdateVidaExtra(false);
-                        NavigatorController().navigatorBack(context);
+                        if (vidaExtra > 0) {
+                          DatabaseHelper().DesfazerUpdateFimPartida(indexMoney);
+                          clickButton = true;
+                          jogarController.retornarAoJogo();
+                          colorBotaoAux = [Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.1)];
+                          DatabaseHelper().UpdateVidaExtra(false);
+                          NavigatorController().navigatorBack(context);
+                        } else {
+                          DialogShowAwait(context);
+                          RewardedAd.load(
+                              adUnitId: Recompesa,
+                              request: const AdRequest(),
+                              rewardedAdLoadCallback: RewardedAdLoadCallback(
+                                onAdLoaded: (ad) {
+                                  NavigatorController().navigatorBack(context);
+                                  _rewardedAd = ad;
+                                  _rewardedAd!.show(onUserEarnedReward: (AdWithoutView ad, RewardItem rewardItem) {
+                                    DatabaseHelper().DesfazerUpdateFimPartida(indexMoney);
+                                    clickButton = true;
+                                    jogarController.retornarAoJogo();
+                                    colorBotaoAux = [Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.1)];
+                                    NavigatorController().navigatorBack(context);
+                                  });
+                                },
+                                onAdFailedToLoad: (LoadAdError error) {
+                                  debugPrint('RewardedAd failed to load: $error');
+                                },
+                              ));
+                        }
                       },
                       child: Container(
                         width: 130,
@@ -303,17 +333,20 @@ class JogarWidgets {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
-                                children: const [
-                                  Icon(Icons.heart_broken_sharp, color: Colors.amber),
-                                  Text(
-                                    " Usar vida extra",
-                                    style: TextStyle(color: Colors.white),
-                                    textAlign: TextAlign.center,
+                                children: [
+                                  Icon(vidaExtra == 0 ? Icons.tv : Icons.heart_broken_sharp, color: Colors.amber),
+                                  SizedBox(
+                                    width: 170,
+                                    child: Text(
+                                      vidaExtra == 0 ? " Assista e ganhe uma chance" : " Usar vida extra",
+                                      style: TextStyle(color: Colors.white),
+                                      textAlign: TextAlign.center,
+                                    ),
                                   ),
                                 ],
                               ),
                               Text(
-                                "3",
+                                vidaExtra.toString(),
                                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
                                 textAlign: TextAlign.center,
                               ),

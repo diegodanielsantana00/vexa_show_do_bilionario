@@ -28,7 +28,7 @@ class _LojaScreenState extends State<LojaScreen> {
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () => NavigatorController().navigatorBack(context),
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios_new_outlined,
             color: Colors.white,
           ),
@@ -42,6 +42,7 @@ class _LojaScreenState extends State<LojaScreen> {
               lojaWidgets.containerProdutosLoja(context, "Vida Extra", 1500),
               lojaWidgets.titulo("Assista e ganhe"),
               lojaWidgets.dinheiroGratis(context),
+              lojaWidgets.pagamentosPendentes(),
               lojaWidgets.titulo("Compre e ganhe"),
               for(int i = 0; i < produtosGlobais.length; i++)
               lojaWidgets.containerProdutosLojaDinheiroReal(context, produtosGlobais[i])

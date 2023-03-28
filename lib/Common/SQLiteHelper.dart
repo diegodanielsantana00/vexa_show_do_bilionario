@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Models/Config.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Models/User.dart';
+import 'package:vexa_show_do_bilionario/Areas/Loja/Models/Pix.dart';
 
 class DatabaseHelper {
   static DatabaseHelper? _databaseHelper;
@@ -26,7 +27,7 @@ class DatabaseHelper {
   void _createDatabase(Database db, int version) async {
     await db.execute("CREATE TABLE user(id INTEGER primary key autoincrement, qtd_play BIGINT, qtd_vida BIGINT, money BIGINT, token_premium TEXT, email TEXT, cpf TEXT, nome TEXT);");
     await db.execute("CREATE TABLE config(music TEXT, sound_effects TEXT);");
-    await db.execute("CREATE TABLE pix(id INTEGER primary key autoincrement, id_product TEXT, pix_date STRING, pix_qrcode TEXT, paymentID TEXT, email TEXT );");
+    await db.execute("CREATE TABLE pix(id INTEGER primary key autoincrement, id_product TEXT, pix_date STRING, pix_qrcode TEXT, paymentID TEXT, email TEXT, status TEXT );");
   }
 
   Future<int> insertDatabase(String table, dynamic object, {Database? database2}) async {
@@ -56,6 +57,10 @@ class DatabaseHelper {
     executeStringLocal("UPDATE user SET qtd_play = qtd_play+1, money = money+$money");
   }
 
+  Future<void> DesfazerUpdateFimPartida(int money) async {
+    executeStringLocal("UPDATE user SET qtd_play = qtd_play-1, money = money-$money");
+  }
+
   Future<void> UpdateMoney(int money) async {
     await executeStringLocal("UPDATE user SET money = money+$money");
   }
@@ -68,6 +73,12 @@ class DatabaseHelper {
     Database db = await database;
     var result = await db.query("user");
     return result.isNotEmpty ? result.map((c) => User.fromMap(c)).toList() : [];
+  }
+
+  Future<List<Pix>> getPix() async {
+    Database db = await database;
+    var result = await db.query("pix", where: "status = 'P'");
+    return result.isNotEmpty ? result.map((c) => Pix.fromMap(c)).toList() : [];
   }
 
   Future<List<Config>> getConfig() async {
