@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, non_constant_identifier_names
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, use_build_context_synchronously
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -7,8 +7,14 @@ import 'package:vexa_show_do_bilionario/Areas/Home/Models/Config.dart';
 import 'package:vexa_show_do_bilionario/Areas/Home/Models/User.dart';
 
 import 'package:vexa_show_do_bilionario/Areas/Home/Views/home_screen.dart';
+import 'package:vexa_show_do_bilionario/Areas/Loja/Controller/loja_controller.dart';
+import 'package:vexa_show_do_bilionario/Areas/Loja/Models/Pix.dart';
+import 'package:vexa_show_do_bilionario/Common/MercadoPagoAPI/MercadoPago.dart';
+import 'package:vexa_show_do_bilionario/Common/MercadoPagoAPI/MercadoPagoPayments.dart';
 import 'package:vexa_show_do_bilionario/Common/Navigator.dart';
 import 'package:vexa_show_do_bilionario/Common/Perguntas.dart';
+import 'package:vexa_show_do_bilionario/Common/ProdutosGlobal.dart';
+import 'package:vexa_show_do_bilionario/routes_private.dart';
 
 import '../../Common/SQLiteHelper.dart';
 
@@ -53,15 +59,23 @@ class _SplashScreenState extends State<SplashScreen> {
           if (await inAppReview.isAvailable()) {
             inAppReview.requestReview();
           }
-        List<Config> aux = await DatabaseHelper().getConfig();
+          List<Config> aux = await DatabaseHelper().getConfig();
 
           configGlobal = aux[0];
-
         } else {
           await DatabaseHelper().insertDatabase("user", User(id: 1, qtd_play: 0, qtd_vida: 2, money: 100, token_premium: ""));
           await DatabaseHelper().insertDatabase("config", Config(music: "T", sound_effects: "T"));
           configGlobal = Config(music: "T", sound_effects: "T");
         }
+        MercadoPago repMercadoPagoAPI = MercadoPago(MercadoPagoAPI);
+        List<Pix> pixsAtivos = await DatabaseHelper().getPix();
+        for (var element in pixsAtivos) {
+          MercadoPagoPayment paymentComplete = await repMercadoPagoAPI.ConsultPayments(idPayments: element.paymentID.toString());
+          if (paymentComplete.status == "approved") {
+            await LojaController().comprarPremium(context, produtosGlobais.firstWhere((elements) => elements.id == element.id_produto));
+          }
+        }
+
         final result = await InternetAddress.lookup('google.com.br');
         if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
           Future.delayed(Duration(seconds: 2), () {

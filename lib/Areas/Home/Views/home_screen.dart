@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
     StartAudio();
     super.initState();
     // if (!widget.premium) {
-      createBannerAd();
+    createBannerAd();
     // }
   }
 
@@ -75,14 +77,15 @@ class _HomeScreenState extends State<HomeScreen> {
               homeWidgets.botaoHomeScreen(" Loja", () {
                 NavigatorController().navigatorToReturn(context, LojaScreen());
               }, Icons.store),
-              homeWidgets.botaoHomeScreen(" Sair", () {}, Icons.exit_to_app),
+              homeWidgets.botaoHomeScreen(" Sair", () {
+                exit(0);
+              }, Icons.exit_to_app),
               homeWidgets.acaoIconsButton()
             ],
           ),
         ),
-
       ),
-            bottomNavigationBar: bannerAd == null /*|| widget.premium*/
+      bottomNavigationBar: bannerAd == null /*|| widget.premium*/
           ? null
           : Container(
               margin: const EdgeInsets.only(bottom: 30),

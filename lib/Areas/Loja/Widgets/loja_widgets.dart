@@ -5,8 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:vexa_show_do_bilionario/Areas/Loja/Controller/loja_controller.dart';
 import 'package:vexa_show_do_bilionario/Areas/Loja/Models/Pix.dart';
 import 'package:vexa_show_do_bilionario/Areas/Loja/Models/Produto.dart';
+import 'package:vexa_show_do_bilionario/Areas/Loja/Views/show_pix.dart';
 import 'package:vexa_show_do_bilionario/Common/GlobalFunctions.dart';
+import 'package:vexa_show_do_bilionario/Common/MercadoPagoAPI/MercadoPago.dart';
+import 'package:vexa_show_do_bilionario/Common/MercadoPagoAPI/MercadoPagoPayments.dart';
+import 'package:vexa_show_do_bilionario/Common/Navigator.dart';
+import 'package:vexa_show_do_bilionario/Common/ProdutosGlobal.dart';
 import 'package:vexa_show_do_bilionario/Common/SQLiteHelper.dart';
+import 'package:vexa_show_do_bilionario/routes_private.dart';
 
 class LojaWidgets {
   TextEditingController emailController = TextEditingController();
@@ -79,53 +85,58 @@ class LojaWidgets {
             return Column(
               children: [
                 titulo("Pix pendentes"),
-                for(int i = 0; i < snapshot.data!.length; i++)
-                GestureDetector(
-      onTap: () async {
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          width: getSize(context).width * 0.9,
-          height: 50,
-          decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(20)), color: Colors.blue.withOpacity(0.1)),
-          child: Padding(
-            padding: const EdgeInsets.all(9.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.lock_clock_outlined,
-                      color: Colors.white,
+                for (int i = 0; i < snapshot.data!.length; i++)
+                  GestureDetector(
+                    onTap: () async {
+                      DateTime pix = snapshot.data![i].pix_date ?? DateTime(1980);
+                      NavigatorController().navigatorToReturn(
+                          context,
+                          ShowPixScreen(pix, produtosGlobais.firstWhere((element) => element.id == snapshot.data![i].id_produto),
+                              MercadoPagoPayment(email: snapshot.data![i].email, id: int.parse(snapshot.data![i].paymentID.toString()), qrCode: snapshot.data![i].pix_qrcode)));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: getSize(context).width * 0.9,
+                        height: 50,
+                        decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(20)), color: Colors.blue.withOpacity(0.1)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(9.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.lock_clock_outlined,
+                                    color: Colors.white,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "Pendente - R\$ ${produtosGlobais.firstWhere((element) => element.id ==snapshot.data![i].id_produto).preco}",
+                                      style: const TextStyle(color: Colors.white),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      produtosGlobais.firstWhere((element) => element.id ==snapshot.data![i].id_produto).nome,
+                                      style: const TextStyle(color: Colors.white),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        snapshot.data![i].status.toString(),
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "PIX 1",
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    )
+                  )
               ],
             );
           }
@@ -165,7 +176,24 @@ class LojaWidgets {
   Widget containerProdutosLojaDinheiroReal(BuildContext context, Produto produto) {
     return GestureDetector(
       onTap: () async {
-        DadosModal(context, produto);
+        List<Pix> pendente = await DatabaseHelper().getPix();
+        if (!pendente.any((element) => element.id_produto == produto.id)) {
+          DadosModal(context, produto);
+        } else {
+          AwesomeDialog(
+            context: context,
+            animType: AnimType.scale,
+            dialogType: DialogType.warning,
+            body: Center(
+              child: Text(
+                'Você ainda tem um pix pendente para o produto - ${produto.nome}',
+                style: TextStyle(fontStyle: FontStyle.italic),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            btnOkOnPress: () {},
+          ).show();
+        }
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -326,7 +354,7 @@ class LojaWidgets {
                             keyboardType: TextInputType.text,
                             autocorrect: true,
                             textCapitalization: TextCapitalization.none,
-                            cursorColor: Color.fromARGB(255, 1, 2, 85),
+                            cursorColor: const Color.fromARGB(255, 1, 2, 85),
                             decoration: const InputDecoration(border: InputBorder.none, hintText: "Seu CPF"),
                             controller: cpfController,
                           ),
@@ -338,20 +366,23 @@ class LojaWidgets {
                           onTap: () async {
                             DialogShowAwait(context);
                             try {
-                              //String token = await GenerateToken();
-                              // MercadoPago repMercadoPagoAPI = MercadoPago(MercadoPagoAPI);
-                              // MercadoPagoPayment paymentComplete = await repMercadoPagoAPI.PaymentPix(
-                              //     amount: produto.preco,
-                              //     name: nomeController.text,
-                              //     email: emailController.text,
-                              //     docNumber: cpfController.text,
-                              //     description: 'SWB SHOW DO BILHÃO ${produto.nome} - ${emailController.text.replaceAll('@', '').replaceAll('.', '').replaceAll('com', '')} ');
-                              Pix newUser =
-                                  Pix(email: emailController.text, pix_date: DateTime.now().add(const Duration(minutes: 65)), pix_qrcode: "paymentComplete.qrCode", paymentID: "123", status: "P");
+                              MercadoPago repMercadoPagoAPI = MercadoPago(MercadoPagoAPI);
+                              MercadoPagoPayment paymentComplete = await repMercadoPagoAPI.PaymentPix(
+                                  amount: produto.preco,
+                                  name: nomeController.text,
+                                  email: emailController.text,
+                                  docNumber: cpfController.text,
+                                  description: 'SWB SHOW DO BILHÃO ${produto.nome} - ${emailController.text.replaceAll('@', '').replaceAll('.', '').replaceAll('com', '')} ');
+                              Pix newUser = Pix(
+                                  id_produto: produto.id,
+                                  email: emailController.text,
+                                  pix_date: DateTime.now().add(const Duration(minutes: 65)),
+                                  pix_qrcode: paymentComplete.qrCode,
+                                  paymentID: paymentComplete.id.toString(),
+                                  status: "P");
                               await DatabaseHelper().insertDatabase('pix', newUser);
-                              //NavigatorController().navigatorToNoReturn(context, ShowPixScreen(DateTime.now().add(Duration(minutes: 60)), token, paymentComplete));
+                              NavigatorController().navigatorToReturn(context, ShowPixScreen(DateTime.now().add(Duration(minutes: 60)), produto, paymentComplete));
                             } catch (e) {
-                              throw e;
                               Future.delayed(const Duration(seconds: 1), () {
                                 Navigator.pop(context);
                                 AwesomeDialog(

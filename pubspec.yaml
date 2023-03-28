@@ -46,6 +46,10 @@ dependencies:
   flame_audio: ^1.4.0
   google_mobile_ads: ^2.4.0
   dio: ^5.1.0
+  intl: ^0.18.0
+  qr_flutter: ^4.0.0
+  unique_identifier: ^0.3.0
+  postgres: ^2.6.1
 
 dev_dependencies:
   flutter_test:
