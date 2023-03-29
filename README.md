@@ -1,17 +1,37 @@
-# vexa_show_do_bilionario
+# 📱 VEXA Show do bilhão
 
-A new Flutter project.
+> An app to make your life easier
 
-## Getting Started
+## Prerequisites
+  • Flutter 3.3.4
 
-This project is a starting point for a Flutter application.
+## 🚀 Usage
 
-A few resources to get you started if this is your first Flutter project:
+Make sure you have [flutter](https://docs.flutter.dev/get-started/install) installed (`3.3.4`)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Just run the following command at the root of your project and answer questions:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# vexa_show_do_bilionario
+```sh
+flutter upgrade
+```
+
+```sh
+flutter pub get
+```
+
+```sh
+flutter run
+```
+
+## Author
+👤 **Diego Daniel**
+- Instagram: [@diegodanie_](https://instagram.com/diegodanie_)
+- Github: [@diegodanielsantana00](https://github.com/diegodanielsantana00)
+
+## 📝 License
+Copyright © 2023 [Diego Daniel](https://github.com/diegodanielsantana00).<br />
+
+<p align="center">
+<a href="https://play.google.com/store/apps/details?id=com.danieldiego.vexa_show_do_bilionario"><img src="https://play.google.com/intl/pt-BR/badges/static/images/badges/en_badge_web_generic.png" width="20%"></a>
+</p>
+
